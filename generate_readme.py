@@ -27,6 +27,18 @@ def validate_input(value):
         return "This field cannot be empty."
     return True
 
+def get_multiline_input(prompt):
+    """Helper function to collect multi-line input."""
+    console = Console()
+    console.print(prompt)
+    lines = []
+    while True:
+        line = input()
+        if line.strip().lower() == "end":
+            break
+        lines.append(line)
+    return "\n".join(lines)
+
 def main():
     console = Console()
     console.print("\n[bold cyan]🌟 README Generator 🌟[/bold cyan]", justify="center")
@@ -34,9 +46,12 @@ def main():
 
     # Collect user inputs
     project_title = inquirer.text(message="Project Title:", validate=validate_input).execute()
-    project_description = inquirer.text(message="Project Description (multi-line, press Enter for new lines, Ctrl+D to finish):", multiline=True, validate=validate_input).execute()
-    installation = inquirer.text(message="Installation Instructions (multi-line, press Enter for new lines, Ctrl+D to finish):", multiline=True, validate=validate_input).execute()
-    usage = inquirer.text(message="Usage Instructions (multi-line, press Enter for new lines, Ctrl+D to finish):", multiline=True, validate=validate_input).execute()
+    console.print("\nEnter Project Description (type 'END' on a new line to finish):")
+    project_description = get_multiline_input("")
+    console.print("\nEnter Installation Instructions (type 'END' on a new line to finish):")
+    installation = get_multiline_input("")
+    console.print("\nEnter Usage Instructions (type 'END' on a new line to finish):")
+    usage = get_multiline_input("")
     
     license_choice = inquirer.select(
         message="Select License:",
